@@ -616,7 +616,140 @@
         </article>
       </div>
     </section>
+<!-- Section 4: Nguyên Nhân & Biện Pháp Phòng Cháy Tại Nhà (Đồng bộ Mẫu 1) -->
+        <section class="border-t border-slate-800 pt-12">
+            <div class="mb-8">
+                <span class="text-xs font-mono uppercase tracking-widest text-red-400 bg-red-500/10 px-3 py-1 rounded-full">Phòng ngừa chủ động</span>
+                <h2 class="text-2xl md:text-3xl font-bold mt-2">Nguyên Nhân Cháy Nổ & Biện Pháp Phòng Cháy Tại Nhà</h2>
+                <p class="text-slate-400 text-sm mt-1">Nhận diện các rủi ro tiềm ẩn và đánh dấu kiểm tra mức độ an toàn cho ngôi nhà của bạn.</p>
+            </div>
 
+            <div class="grid lg:grid-cols-12 gap-8">
+                <!-- Cột trái: 4 Nguyên nhân cháy nổ hàng đầu -->
+                <div class="lg:col-span-6 space-y-4">
+                    <h3 class="text-lg font-bold text-amber-400 flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-triangle-exclamation"></i> 4 Nguyên Nhân Gây Cháy Phổ Biến Nhất
+                    </h3>
+
+                    <div class="bg-slate-900 border border-slate-800 hover:border-red-500/50 transition rounded-xl p-5 flex gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">1. Sự cố hệ thống điện & sạc thiết bị</h4>
+                            <p class="text-slate-400 text-sm mt-1 leading-relaxed">Cắm quá nhiều thiết bị công suất lớn vào một ổ nối dài, dây dẫn cũ hỏng hở mạch, hoặc sạc xe điện, điện thoại qua đêm.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 hover:border-red-500/50 transition rounded-xl p-5 flex gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-fire-flame-curved"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">2. Sơ suất khi đun nấu & rò rỉ gas</h4>
+                            <p class="text-slate-400 text-sm mt-1 leading-relaxed">Quên khóa van bình gas sau khi nấu, ống dẫn gas bị chuột cắn, hoặc bật bếp đun nhưng bỏ đi làm việc khác khiến dầu mỡ bén lửa.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 hover:border-red-500/50 transition rounded-xl p-5 flex gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-orange-500/10 text-orange-500 flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-hands-praying"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">3. Thắp hương thờ cúng & đốt vàng mã</h4>
+                            <p class="text-slate-400 text-sm mt-1 leading-relaxed">Bố trí bàn thờ gần rèm cửa, vách gỗ; đốt vàng mã không có thùng kim loại che chắn hoặc không trông coi để tàn lửa bay.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 hover:border-red-500/50 transition rounded-xl p-5 flex gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">4. Tích trữ chất dễ cháy & bịt lối thoát</h4>
+                            <p class="text-slate-400 text-sm mt-1 leading-relaxed">Để xăng dầu, cồn, bình gas mini, thùng carton gần nguồn nhiệt; hàn kín "chuồng cọp" ban công không có cửa mở thoát nạn.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cột phải: Checklist Biện pháp phòng cháy tương tác -->
+                <div class="lg:col-span-6 bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
+                                <i class="fa-solid fa-shield-halved"></i> Checklist Phòng Cháy Tại Nhà
+                            </h3>
+                            <span id="safety-score" class="text-xs font-mono font-bold bg-slate-800 text-emerald-400 px-3 py-1 rounded-full">0/6 Đã đạt</span>
+                        </div>
+
+                        <!-- Thanh tiến trình an toàn -->
+                        <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden mb-6 border border-slate-800">
+                            <div id="safety-bar" class="bg-emerald-500 h-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+
+                        <div class="space-y-3" id="prevention-checklist">
+                            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-emerald-500/50 cursor-pointer transition">
+                                <input type="checkbox" onchange="updateSafetyScore()" class="safety-chk mt-1 w-4 h-4 accent-emerald-500 rounded">
+                                <span class="text-sm text-slate-300">Lắp đặt Aptomat chống quá tải/chống giật; không sạc xe điện, điện thoại qua đêm.</span>
+                            </label>
+
+                            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-emerald-500/50 cursor-pointer transition">
+                                <input type="checkbox" onchange="updateSafetyScore()" class="safety-chk mt-1 w-4 h-4 accent-emerald-500 rounded">
+                                <span class="text-sm text-slate-300">Khóa van bình gas ngay sau mỗi lần đun nấu; kiểm tra định kỳ dây dẫn gas.</span>
+                            </label>
+
+                            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-emerald-500/50 cursor-pointer transition">
+                                <input type="checkbox" onchange="updateSafetyScore()" class="safety-chk mt-1 w-4 h-4 accent-emerald-500 rounded">
+                                <span class="text-sm text-slate-300">Bát hương đặt trên đế không cháy; đốt vàng mã trong dụng cụ kín và có người trông.</span>
+                            </label>
+
+                            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-emerald-500/50 cursor-pointer transition">
+                                <input type="checkbox" onchange="updateSafetyScore()" class="safety-chk mt-1 w-4 h-4 accent-emerald-500 rounded">
+                                <span class="text-sm text-slate-300">Không để vật liệu dễ cháy (giấy, vải, xăng dầu) chắn lối đi, cầu thang bộ.</span>
+                            </label>
+
+                            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-emerald-500/50 cursor-pointer transition">
+                                <input type="checkbox" onchange="updateSafetyScore()" class="safety-chk mt-1 w-4 h-4 accent-emerald-500 rounded">
+                                <span class="text-sm text-slate-300">Mở ô cửa thoát hiểm (tối thiểu 60x80cm) trên khung sắt chuồng cọp ban công.</span>
+                            </label>
+
+                            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-emerald-500/50 cursor-pointer transition">
+                                <input type="checkbox" onchange="updateSafetyScore()" class="safety-chk mt-1 w-4 h-4 accent-emerald-500 rounded">
+                                <span class="text-sm text-slate-300">Trang bị sẵn bình chữa cháy, mặt nạ lọc độc, đèn pin ở vị trí dễ thấy, dễ lấy.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="safety-status-msg" class="mt-5 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-400 text-center">
+                        Hãy tick vào các biện pháp gia đình bạn đã thực hiện để kiểm tra mức độ an toàn!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            function updateSafetyScore() {
+                const checkboxes = document.querySelectorAll('.safety-chk');
+                const checkedCount = Array.from(checkboxes).filter(c => c.checked).length;
+                const total = checkboxes.length;
+                const percent = Math.round((checkedCount / total) * 100);
+
+                document.getElementById('safety-score').innerText = `${checkedCount}/${total} Đã đạt`;
+                document.getElementById('safety-bar').style.width = `${percent}%`;
+
+                const msg = document.getElementById('safety-status-msg');
+                if (checkedCount === total) {
+                    msg.className = 'mt-5 p-3 rounded-lg bg-emerald-950/60 border border-emerald-600 text-xs text-emerald-300 text-center font-semibold';
+                    msg.innerText = '🎉 TUYỆT VỜI! Ngôi nhà của bạn đã đáp ứng đầy đủ các tiêu chuẩn an toàn PCCC cơ bản.';
+                } else if (checkedCount >= 3) {
+                    msg.className = 'mt-5 p-3 rounded-lg bg-amber-950/60 border border-amber-600 text-xs text-amber-300 text-center';
+                    msg.innerText = `⚠️ Mức độ trung bình (${percent}%). Hãy hoàn thiện nốt ${total - checkedCount} tiêu chí còn lại để đảm bảo an toàn tối đa.`;
+                } else {
+                    msg.className = 'mt-5 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-400 text-center';
+                    msg.innerText = 'Hãy tick vào các biện pháp gia đình bạn đã thực hiện để kiểm tra mức độ an toàn!';
+                }
+            }
+        </script>
     <div class="emergency">
       <p><strong>Khẩn cấp:</strong> <a href="tel:114">114</a> (cứu hỏa) · <strong>115</strong> (cấp cứu) · <strong>113</strong> (công an)</p>
     </div>
