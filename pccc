@@ -1,268 +1,631 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Trình Giả Lập Xử Lý Sự Cố Cháy Nổ Tại Nhà</title>
-<meta name="description" content="Luyện xử lý sự cố cháy nổ tại nhà qua 3 tình huống, so sánh bình bột và CO2, và các sai lầm khi dùng bình chữa cháy.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com/3.4.17"></script>
-<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
-<style>
-  body{background:#020617;background-image:linear-gradient(rgba(148,163,184,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.06) 1px,transparent 1px);background-size:32px 32px}
-  .panel{background:rgba(15,23,42,.85);border:1px solid #1e293b;border-radius:14px}
-  .glow-red{border-color:rgba(239,68,68,.7)!important;box-shadow:0 0 28px rgba(239,68,68,.3)}
-  .glow-green{border-color:rgba(52,211,153,.7)!important;box-shadow:0 0 28px rgba(52,211,153,.25)}
-  .glow-amber{border-color:rgba(245,158,11,.7)!important;box-shadow:0 0 28px rgba(245,158,11,.25)}
-  .tag{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
-  .blink{animation:blink 1.2s infinite}@keyframes blink{50%{opacity:.25}}
-  .shake{animation:shake .4s}@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
-  .rise{animation:rise .35s ease-out}@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-  .opt{transition:transform .15s,border-color .15s,background .15s}.opt:hover:not(:disabled){transform:translateY(-2px);border-color:#f59e0b;background:rgba(245,158,11,.08)}
-  .opt:disabled{cursor:not-allowed}
-  .thumb{transition:transform .35s cubic-bezier(.4,0,.2,1)}
-  .cmp-card{transition:opacity .4s,transform .4s,filter .4s,box-shadow .4s}
-  .perspective{perspective:1100px}
-  .flip{position:relative;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,.2,.2,1)}
-  .flipped .flip{transform:rotateY(180deg)}
-  .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:1.25rem;overflow:auto}
-  .back{transform:rotateY(180deg)}
-  button:focus-visible,a:focus-visible{outline:3px solid #f59e0b;outline-offset:2px}
-  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trình Giả Lập PCCC tại Nhà</title>
+  <meta name="description" content="Tổng hợp kiến thức về xử lý sự cố cháy nổ tại nhà, cách chọn bình chữa cháy và quy trình P.A.S.S." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-2: #0f172a;
+      --panel: rgba(15, 23, 42, 0.88);
+      --panel-strong: rgba(15, 23, 42, 0.96);
+      --line: #334155;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --green: #34d399;
+      --sky: #38bdf8;
+      --shadow: rgba(15, 23, 42, 0.65);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      background-image:
+        linear-gradient(rgba(148,163,184,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,163,184,0.06) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(2, 6, 23, 0.9);
+      border-bottom: 1px solid rgba(51, 65, 85, 0.8);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 0;
+      flex-wrap: wrap;
+    }
+
+    .brand small {
+      display: block;
+      color: var(--green);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.72rem;
+    }
+
+    .brand h1 {
+      margin: 6px 0 0;
+      font-size: clamp(1.05rem, 1.4vw, 1.4rem);
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-size: 0.94rem;
+      font-weight: 700;
+    }
+
+    .nav a {
+      color: var(--text);
+      opacity: .86;
+    }
+
+    .nav a:hover { color: var(--amber); }
+
+    .call-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #dc2626;
+      color: white;
+      font-weight: 800;
+      box-shadow: 0 0 24px rgba(239, 68, 68, 0.35);
+      border: 1px solid rgba(239, 68, 68, 0.8);
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .page {
+      padding: 42px 0 72px;
+    }
+
+    section {
+      padding-top: 18px;
+      padding-bottom: 18px;
+    }
+
+    .module-tag {
+      color: var(--amber);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 700;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    h2 {
+      margin: 8px 0 0;
+      font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 800;
+      line-height: 1.15;
+    }
+
+    .lead {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-top: 14px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 12px 28px var(--shadow);
+    }
+
+    .module-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1.35fr;
+      gap: 24px;
+      margin-top: 28px;
+    }
+
+    .scenario-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .scenario-item {
+      padding: 18px 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.78);
+    }
+
+    .scenario-item strong {
+      display: inline-block;
+      font-size: 1.1rem;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+
+    .scenario-item .emoji {
+      font-size: 1.8rem;
+    }
+
+    .scenario-item p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+      line-height: 1.6;
+    }
+
+    .scenario-panel {
+      padding: 22px 22px 18px;
+      min-height: 420px;
+    }
+
+    .scenario-panel h3 {
+      margin: 10px 0 0;
+      font-size: clamp(1.25rem, 2vw, 2rem);
+      line-height: 1.3;
+    }
+
+    .scenario-panel .mini-label {
+      display: inline-block;
+      color: var(--amber);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 700;
+    }
+
+    .steps {
+      margin-top: 20px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .step {
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(148,163,184,0.16);
+    }
+
+    .step strong {
+      display: block;
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    .summary-box {
+      margin-top: 18px;
+      padding: 16px 18px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(148,163,184,0.2);
+      border-radius: 12px;
+    }
+
+    .summary-box h4 {
+      margin: 0 0 6px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .summary-box p {
+      margin: 0;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .compare-box {
+      margin-top: 28px;
+      border-radius: 18px;
+      padding: 20px 18px 8px;
+      background: rgba(10, 15, 25, 0.9);
+      border: 1px solid rgba(148,163,184,0.2);
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    .compare-card {
+      padding: 20px 18px 18px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(15, 23, 42, 0.78);
+    }
+
+    .compare-card h3 {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    .compare-card .sub {
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .compare-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 18px 0 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .compare-card li {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-top: 1px solid rgba(148,163,184,0.22);
+      padding-top: 10px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .tag-good, .tag-warn, .tag-bad {
+      display: inline-block;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 4px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .tag-good { background: rgba(52, 211, 153, 0.12); color: #a7f3d0; border: 1px solid rgba(52, 211, 153, 0.35); }
+    .tag-warn { background: rgba(245, 158, 11, 0.12); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.35); }
+    .tag-bad { background: rgba(239, 68, 68, 0.12); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.35); }
+
+    .warning-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.7;
+    }
+
+    .pass-grid {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .pass-card {
+      padding: 18px 18px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(15, 23, 42, 0.8);
+      min-height: 290px;
+    }
+
+    .pass-card .num {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: var(--red);
+      line-height: 1;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .pass-card .en {
+      display: inline-block;
+      margin-top: 10px;
+      color: var(--amber);
+      font-family: "JetBrains Mono", monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .pass-card h3 {
+      margin: 12px 0 8px;
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .pass-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .pass-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 14px 0 0;
+      display: grid;
+      gap: 8px;
+      color: var(--text);
+    }
+
+    .pass-card li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.55;
+    }
+
+    .pass-card li::before {
+      content: "✖";
+      color: var(--red);
+      font-weight: 800;
+    }
+
+    .emergency {
+      margin-top: 32px;
+      padding: 18px 20px;
+      border-radius: 14px;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      background: rgba(127, 29, 29, 0.12);
+      text-align: center;
+    }
+
+    .emergency p {
+      margin: 0;
+      font-size: 0.96rem;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .emergency strong {
+      color: #fca5a5;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 1.2rem;
+    }
+
+    .footer {
+      padding: 24px 0 48px;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid rgba(51, 65, 85, 0.8);
+      margin-top: 30px;
+    }
+
+    .footer p {
+      margin: 8px 0 0;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 900px) {
+      .module-grid,
+      .compare-grid,
+      .pass-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
-<body class="font-sans text-slate-200 antialiased">
-
-<header class="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
-  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
-    <div>
-      <p class="tag text-emerald-400"><span class="blink">●</span> Hệ thống huấn luyện trực tuyến</p>
-      <h1 class="text-lg font-extrabold leading-tight text-white sm:text-xl">Trình Giả Lập Xử Lý Sự Cố Cháy Nổ Tại Nhà</h1>
-    </div>
-    <nav class="flex items-center gap-4 text-sm font-semibold">
-      <a href="#sim" class="hover:text-amber-400">Tình huống</a><a href="#cmp" class="hover:text-amber-400">So sánh bình</a><a href="#pass" class="hover:text-amber-400">P.A.S.S</a>
-      <a href="tel:114" class="rounded-lg bg-red-600 px-3 py-2 font-mono text-white glow-red hover:bg-red-500">GỌI 114</a>
-    </nav>
-  </div>
-</header>
-
-<main class="mx-auto max-w-6xl space-y-16 px-4 py-10">
-
-<!-- ========== 1. MÔ PHỎNG TÌNH HUỐNG ========== -->
-<section id="sim" class="scroll-mt-24">
-  <p class="tag text-amber-400">Module 01</p>
-  <h2 class="text-3xl font-extrabold text-white">Mô phỏng xử lý tình huống</h2>
-  <p class="mt-2 max-w-2xl text-slate-400">Chọn đúng thiết bị và hành động theo thứ tự. Mỗi lựa chọn sai làm giảm thanh an toàn của bạn và được giải thích vì sao sai.</p>
-  <div class="mt-6 grid gap-5 lg:grid-cols-[300px_1fr]">
-    <div class="space-y-3">
-      <div id="scList" class="space-y-3"></div>
-      <div class="panel p-4">
-        <div class="flex items-center justify-between"><span class="tag text-slate-400">Thanh an toàn</span><span id="hpTxt" class="font-mono font-bold text-white">100%</span></div>
-        <div class="mt-2 h-3 overflow-hidden rounded-full bg-slate-800"><div id="hpBar" class="h-full w-full rounded-full bg-emerald-400 transition-all duration-500"></div></div>
-        <p id="stepTxt" class="mt-3 font-mono text-sm text-slate-400"></p>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <small>Hệ thống huấn luyện trực tuyến</small>
+        <h1>Trình Giả Lập Xử Lý Sự Cố Cháy Nổ Tại Nhà</h1>
       </div>
+
+      <nav class="nav" aria-label="Điều hướng chính">
+        <a href="#sim">Tình huống</a>
+        <a href="#cmp">So sánh bình</a>
+        <a href="#pass">P.A.S.S</a>
+        <a href="tel:114" class="call-btn">GỌI 114</a>
+      </nav>
     </div>
-    <div id="stage" class="panel min-h-[420px] p-5 sm:p-6" aria-live="polite"></div>
-  </div>
-</section>
+  </header>
 
-<!-- ========== 2. SO SÁNH BÌNH ========== -->
-<section id="cmp" class="scroll-mt-24">
-  <p class="tag text-amber-400">Module 02</p>
-  <h2 class="text-3xl font-extrabold text-white">So sánh bình bột (MFZ) và bình khí CO₂ (MT3)</h2>
-  <p class="mt-2 max-w-2xl text-slate-400">Kéo công tắc để tập trung vào từng loại hoặc đặt cạnh nhau.</p>
-  <div class="mx-auto mt-6 w-full max-w-md">
-    <div id="seg" class="relative grid grid-cols-3 rounded-xl border border-slate-700 bg-slate-900 p-1 font-mono text-xs font-bold sm:text-sm" role="tablist">
-      <div id="thumb" class="thumb absolute inset-y-1 left-1 w-[calc(33.333%-4px)] rounded-lg bg-amber-500"></div>
-      <button role="tab" data-m="mfz" class="relative z-10 py-2.5">BÌNH BỘT</button>
-      <button role="tab" data-m="cmp" class="relative z-10 py-2.5">SO SÁNH</button>
-      <button role="tab" data-m="co2" class="relative z-10 py-2.5">BÌNH CO₂</button>
+  <main class="container page">
+    <section id="sim">
+      <div class="module-tag">Module 01</div>
+      <h2>Mô phỏng xử lý tình huống</h2>
+      <p class="lead">
+        Chọn đúng thiết bị, đúng thứ tự thao tác và ưu tiên thoát an toàn. Mỗi lựa chọn sai làm giảm thanh an toàn của bạn và phải được xem lại ngay.
+      </p>
+
+      <div class="module-grid">
+        <div class="scenario-list">
+          <article class="scenario-item panel">
+            <span class="emoji">🧊</span>
+            <strong>Chập điện tủ lạnh</strong>
+            <p>Tủ lạnh phát tia lửa, bốc khói ở phía sau lúc nửa đêm.</p>
+          </article>
+
+          <article class="scenario-item panel">
+            <span class="emoji">🍳</span>
+            <strong>Cháy chảo dầu ăn</strong>
+            <p>Chảo dầu quên trên bếp gas, ngọn lửa bốc cao.</p>
+          </article>
+
+          <article class="scenario-item panel">
+            <span class="emoji">🌫️</span>
+            <strong>Khói dày đặc ở hành lang</strong>
+            <p>Chuông báo cháy reo, khói đen tràn ra hành lang chung cư.</p>
+          </article>
+        </div>
+
+        <div class="panel scenario-panel" aria-live="polite">
+          <span class="mini-label">Mục tiêu</span>
+          <h3>Đúng hành động trước khi chữa cháy</h3>
+
+          <div class="steps">
+            <div class="step">
+              <strong>1. Ngắt nguồn nguy hiểm</strong>
+              <p>Với cháy điện, tắt aptomat hoặc rút phích nếu tiếp cận an toàn. Không dùng nước khi thiết bị còn đang mắc điện.</p>
+            </div>
+            <div class="step">
+              <strong>2. Cắt nguồn nhiên liệu</strong>
+              <p>Đối với bếp gas hoặc dầu, tắt bếp, khóa van gas ngay khi có thể. Không đưa tay trực tiếp qua ngọn lửa.</p>
+            </div>
+            <div class="step">
+              <strong>3. Chọn phương pháp dập lửa phù hợp</strong>
+              <p>Máy nấu có dầu: úp vung kín hoặc phủ chăn chữa cháy khô; với thiết bị điện: bình bột ABC hoặc CO₂ phù hợp nếu đã ngắt nguồn điện.</p>
+            </div>
+            <div class="step">
+              <strong>4. Thoát an toàn nếu lửa không kiểm soát</strong>
+              <p>Đám cháy đã lan, khói dày hoặc cửa nóng: ưu tiên thoát thân, đóng cửa lại nếu có thể, gọi 114 ngay.</p>
+            </div>
+          </div>
+
+          <div class="summary-box">
+            <h4>Gợi ý nhớ</h4>
+            <p>Không dùng nước cho dầu đang cháy; không dùng thang máy khi có cháy; không trở lại lấy tài sản nếu lửa đã lan; trước tiên là thoát và báo cho lực lượng cứu hộ.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cmp">
+      <div class="module-tag">Module 02</div>
+      <h2>So sánh bình bột (MFZ) và bình khí CO₂ (MT3)</h2>
+      <p class="lead">Hai loại bình đều có mục đích chữa cháy nhưng không đồng nhất về phạm vi, khoảng cách phun và nguy cơ sử dụng sai.</p>
+
+      <div class="compare-box">
+        <div class="compare-grid">
+          <article class="compare-card panel">
+            <h3>Bình bột (MFZ)</h3>
+            <p class="sub">Bột chữa cháy ABC, dùng đa năng trong gia đình.</p>
+
+            <ul>
+              <li><span>A · Gỗ, giấy, vải</span><span class="tag-good">Dùng được</span></li>
+              <li><span>B · Xăng, dầu, cồn</span><span class="tag-good">Dùng được</span></li>
+              <li><span>C · Gas</span><span class="tag-good">Dùng được</span></li>
+              <li><span>Thiết bị có điện</span><span class="tag-good">Dùng được</span></li>
+              <li><span>Dầu mỡ nấu ăn</span><span class="tag-warn">Hạn chế</span></li>
+            </ul>
+          </article>
+
+          <article class="compare-card panel">
+            <h3>Bình khí CO₂ (MT3)</h3>
+            <p class="sub">Khí CO₂ nén, không để lại cặn, phù hợp với thiết bị điện.</p>
+
+            <ul>
+              <li><span>A · Gỗ, giấy, vải</span><span class="tag-bad">Không phù hợp</span></li>
+              <li><span>B · Xăng, dầu, cồn</span><span class="tag-good">Dùng được</span></li>
+              <li><span>C · Gas</span><span class="tag-warn">Hạn chế</span></li>
+              <li><span>Thiết bị có điện</span><span class="tag-good">Dùng được</span></li>
+              <li><span>Dầu mỡ nấu ăn</span><span class="tag-warn">Hạn chế</span></li>
+            </ul>
+          </article>
+        </div>
+
+        <p class="warning-note">
+          Thông tin mang tính chất hướng dẫn tổng quát. Luôn đọc nhãn trên vỏ bình, kiểm tra loại chất chữa cháy phù hợp và đối chiếu tiêu chuẩn hiện hành (TCVN) của loại bình bạn đang dùng.
+        </p>
+      </div>
+    </section>
+
+    <section id="pass">
+      <div class="module-tag">Module 03</div>
+      <h2>4 bước P.A.S.S và những sai lầm cần tránh</h2>
+      <p class="lead">Bước đúng, đứng đúng vị trí, nhắm đúng gốc lửa và quét đều là yếu tố quyết định khi phun bình chữa cháy.</p>
+
+      <div class="pass-grid">
+        <article class="pass-card panel">
+          <div class="num">01</div>
+          <div class="en">Pull</div>
+          <h3>Kéo chốt an toàn</h3>
+          <p>Giật chốt khỏi tay cầm để mở khóa bình, bẻ niêm chì nếu có.</p>
+          <ul>
+            <li>Cầm bình không đúng cách khi kéo chốt</li>
+            <li>Bỏ qua kiểm tra vòi phun và hướng quay</li>
+            <li>Mất thời gian loay hoay khi lửa đang lan</li>
+          </ul>
+        </article>
+
+        <article class="pass-card panel">
+          <div class="num">02</div>
+          <div class="en">Aim</div>
+          <h3>Hướng vòi vào gốc lửa</h3>
+          <p>Đứng cách 2–3 m, lưng hướng về lối thoát, nhắm vào gốc ngọn lửa.</p>
+          <ul>
+            <li>Nhắm vào ngọn lửa thay vì gốc</li>
+            <li>Đứng quá gần hoặc quá xa</li>
+            <li>Đứng ngược gió, khói và bột đập vào mặt</li>
+          </ul>
+        </article>
+
+        <article class="pass-card panel">
+          <div class="num">03</div>
+          <div class="en">Squeeze</div>
+          <h3>Bóp van xịt</h3>
+          <p>Bóp chặt tay cầm để phun chất chữa cháy, thả tay là dừng.</p>
+          <ul>
+            <li>Phun quá sớm khi chưa nhắm xong</li>
+            <li>Bóp thả liên tục, lãng phí đạm chất</li>
+            <li>Quên rằng bình xách tay chỉ phun được vài chục giây</li>
+          </ul>
+        </article>
+
+        <article class="pass-card panel">
+          <div class="num">04</div>
+          <div class="en">Sweep</div>
+          <h3>Quét đều qua lại</h3>
+          <p>Quét vòi từ bên này sang bên kia ở sát gốc lửa, tiến dần lên.</p>
+          <ul>
+            <li>Quét lên phần ngọn lửa thay vì sát gốc</li>
+            <li>Dừng quá sớm khi lửa còn âm ỉ</li>
+            <li>Quay lưng khỏi lối thoát</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <div class="emergency">
+      <p><strong>Khẩn cấp:</strong> <a href="tel:114">114</a> (cứu hỏa) · <strong>115</strong> (cấp cứu) · <strong>113</strong> (công an)</p>
     </div>
-  </div>
-  <div id="cmpGrid" class="mt-6 grid gap-5 md:grid-cols-2"></div>
-  <p class="mt-3 text-xs text-slate-500">Thông tin mang tính khái quát. Luôn đọc nhãn trên vỏ bình và đối chiếu tiêu chuẩn hiện hành (TCVN) cho loại bình bạn đang dùng.</p>
-</section>
+  </main>
 
-<!-- ========== 3. THẺ LẬT P.A.S.S ========== -->
-<section id="pass" class="scroll-mt-24">
-  <p class="tag text-amber-400">Module 03</p>
-  <h2 class="text-3xl font-extrabold text-white">4 bước P.A.S.S và những sai lầm cần tránh</h2>
-  <p class="mt-2 max-w-2xl text-slate-400">Bấm vào từng thẻ để lật xem sai lầm thực tế ở bước đó.</p>
-  <div id="cards" class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"></div>
-</section>
-
-</main>
-
-<footer class="border-t border-slate-800 py-8 text-center text-sm text-slate-500">
-  <p>Khẩn cấp: <a class="font-mono font-bold text-red-400" href="tel:114">114</a> (cứu hỏa) · <span class="font-mono">115</span> (cấp cứu) · <span class="font-mono">113</span> (công an)</p>
-  <p class="mt-1">Công cụ mang tính giáo dục, không thay thế huấn luyện thực hành do lực lượng PCCC tổ chức.</p>
-</footer>
-
-<script>
-const $ = id => document.getElementById(id);
-const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-
-/* ===== DỮ LIỆU TÌNH HUỐNG (sửa nội dung ở đây) ===== */
-const SC = [
- { id: 'tulanh', icon: '🧊', title: 'Chập điện tủ lạnh', desc: 'Tủ lạnh phát tia lửa, bốc khói ở phía sau lúc nửa đêm.', steps: [
-  { q: 'Việc ĐẦU TIÊN cần làm là gì?', o: [
-    ['Dội xô nước vào tủ lạnh', 0, 'Nước dẫn điện nên bạn có thể bị giật. Thiết bị còn nối điện thì không được dùng nước.'],
-    ['Ngắt aptomat hoặc rút phích cắm nếu tiếp cận an toàn', 1, 'Cắt nguồn điện là bước đầu: loại bỏ nguồn nhiệt và nguy cơ điện giật. Nếu phích đã cháy, ngắt ở aptomat tổng và tránh xa ổ cắm.'],
-    ['Đẩy tủ ra giữa nhà cho thoáng', 0, 'Di chuyển thiết bị đang cháy làm lửa lan và dễ bị bỏng hoặc giật điện.'],
-    ['Mở cửa tủ xem bên trong', 0, 'Mở cửa làm thêm oxy cho lửa và bạn đứng sát nguồn nhiệt, khói độc.']] },
-  { q: 'Đã ngắt điện, lửa còn nhỏ. Chọn thiết bị chữa cháy phù hợp:', o: [
-    ['Xô nước', 0, 'Chỉ nên nghĩ đến nước khi chắc chắn đã ngắt điện hoàn toàn. Với đám cháy thiết bị điện, bình chữa cháy phù hợp là lựa chọn an toàn hơn.'],
-    ['Bình bột ABC', 1, 'Bột ABC dùng được cho đám cháy thiết bị điện và chất rắn như nhựa, vỏ cách điện.'],
-    ['Bình khí CO₂', 1, 'CO₂ không dẫn điện và không để lại cặn, hợp với thiết bị điện tử.'],
-    ['Chăn ướt đẫm nước', 0, 'Chăn ướt trùm lên thiết bị còn điện có thể dẫn điện. Chăn chữa cháy phải khô hoặc vắt kỹ và chỉ dùng khi đã ngắt điện.']] },
-  { q: 'Kỹ thuật phun nào đúng?', o: [
-    ['Phun vào ngọn lửa từ xa', 0, 'Nhắm ngọn lửa không dập được vì nhiên liệu đang cháy nằm ở gốc.'],
-    ['Đứng cách 2–3 m, hướng vòi vào GỐC lửa và quét đều', 1, 'Đúng kỹ thuật: kéo chốt, hướng vào gốc lửa, bóp van, quét qua lại.'],
-    ['Đứng sát, phun từ trên cao xuống', 0, 'Đứng sát tăng nguy cơ bỏng và phun trượt.'],
-    ['Phun liên tục vào góc phòng', 0, 'Chất chữa cháy hạn chế, phun vào chỗ không có lửa là lãng phí.']] },
-  { q: 'Lửa đã tắt. Bạn làm gì tiếp?', o: [
-    ['Cắm điện lại thử xem tủ còn chạy không', 0, 'Thiết bị đã chập cháy có thể còn hở điện, cắm lại dễ cháy lại.'],
-    ['Giữ nguồn điện ngắt, quan sát thêm, nhờ thợ điện kiểm tra; gọi 114 nếu lửa bùng lại', 1, 'Cháy âm ỉ có thể bùng lại nên cần quan sát và kiểm tra hệ thống điện trước khi dùng.'],
-    ['Đóng cửa bếp rồi đi ngủ', 0, 'Không quan sát thì lửa âm ỉ có thể bùng lại mà không ai biết.'],
-    ['Kéo tủ ra để ngoài cầu thang', 0, 'Vật cồng kềnh ở cầu thang cản lối thoát hiểm của cả nhà.']] }
- ] },
- { id: 'chaodau', icon: '🍳', title: 'Cháy chảo dầu ăn', desc: 'Chảo dầu quên trên bếp gas, ngọn lửa bốc cao.', steps: [
-  { q: 'Việc ĐẦU TIÊN cần làm là gì?', o: [
-    ['Dội nước vào chảo', 0, 'Tuyệt đối không dội nước vào dầu đang cháy: nước chìm xuống, bốc hơi tức thì và hất dầu cháy ra xung quanh khiến lửa bùng to.'],
-    ['Tắt bếp, khóa van gas nếu với tới an toàn', 1, 'Cắt nguồn nhiệt và nhiên liệu trước tiên, không đưa tay qua ngọn lửa.'],
-    ['Bê chảo ra ngoài sân', 0, 'Chảo rất nóng, dầu dễ bắn gây bỏng nặng và làm lửa lan dọc đường đi.'],
-    ['Quạt mạnh cho lửa tắt', 0, 'Gió cấp thêm oxy làm lửa bùng to hơn.']] },
-  { q: 'Chọn cách dập lửa chảo dầu:', o: [
-    ['Úp vung kín hoặc phủ chăn chữa cháy lên chảo', 1, 'Ngăn oxy tiếp xúc bề mặt dầu thì lửa tự ngạt. Đây là cách an toàn nhất trong gian bếp.'],
-    ['Đổ thêm nước lạnh', 0, 'Nước làm dầu bắn tung tóe, lửa lan rộng.'],
-    ['Xịt bình chữa cháy mạnh vào sát chảo', 0, 'Tia phun mạnh ở khoảng cách gần có thể hất dầu cháy ra ngoài. Trong nhà ưu tiên vung hoặc chăn chữa cháy.'],
-    ['Dùng khăn khô quạt lửa', 0, 'Quạt cấp thêm oxy và khăn có thể bén lửa.']] },
-  { q: 'Lửa đã tắt sau khi úp vung. Bước tiếp theo?', o: [
-    ['Mở vung ra xem lửa tắt chưa', 0, 'Mở vung sớm, oxy vào làm dầu còn nóng bốc cháy lại.'],
-    ['Giữ nguyên vung và chờ chảo nguội hẳn', 1, 'Dầu rất nóng, cần thời gian để nguội dưới ngưỡng tự bốc cháy.'],
-    ['Đổ dầu cháy xuống bồn rửa', 0, 'Dầu nóng có thể làm nứt bồn, hỏng ống thoát và vẫn còn nguy cơ cháy.'],
-    ['Cho thêm dầu để nấu tiếp', 0, 'Chảo vừa cháy chưa an toàn để dùng lại.']] },
-  { q: 'Lửa lan sang rèm và tủ bếp, bạn không dập kịp. Quyết định đúng?', o: [
-    ['Thoát ra ngoài, đóng cửa bếp lại, gọi 114', 1, 'Đám cháy đã vượt tầm xử lý của một người: ưu tiên mạng sống, đóng cửa để hạn chế khói lửa lan.'],
-    ['Tiếp tục lấy xô nước dội', 0, 'Nước với đám cháy có dầu mỡ rất nguy hiểm, và bạn mất thời gian thoát thân.'],
-    ['Quay vào phòng lấy giấy tờ', 0, 'Không quay lại lấy tài sản, khói độc có thể làm bạn mất ý thức trong vài hơi thở.'],
-    ['Ở lại thử thêm lần nữa', 0, 'Khi lửa đã lan, ở lại chỉ làm bạn chậm thoát nạn.']] }
- ] },
- { id: 'khoi', icon: '🌫️', title: 'Khói dày đặc ở hành lang', desc: 'Chuông báo cháy reo, khói đen tràn ngoài hành lang chung cư.', steps: [
-  { q: 'Trước khi mở cửa ra hành lang, bạn làm gì?', o: [
-    ['Sờ mu bàn tay lên cánh cửa và khe cửa; nếu nóng thì KHÔNG mở', 1, 'Cửa nóng nghĩa là lửa hoặc khí nóng ngay phía sau. Mở ra có thể khiến lửa và khói tràn vào.'],
-    ['Mở toang cửa để quan sát', 0, 'Mở toang cho khói và nhiệt ập vào ngay.'],
-    ['Chạy ra thang máy cho nhanh', 0, 'Không dùng thang máy khi cháy: có thể mất điện, kẹt giữa các tầng hoặc dừng ở tầng có lửa.'],
-    ['Ở yên chờ tiếng loa thông báo', 0, 'Chậm trễ làm mất thời gian thoát hiểm quý giá.']] },
-  { q: 'Cửa nóng và khói lọt vào qua khe cửa. Việc cần làm?', o: [
-    ['Tìm hộp giấy tờ, tài sản trước', 0, 'Mỗi phút trong khói rất quý, hãy ưu tiên an toàn tính mạng.'],
-    ['Gọi 114 báo chính xác vị trí, chèn khe cửa bằng khăn ướt', 1, 'Báo vị trí để lực lượng cứu hộ biết nơi có người mắc kẹt, khăn ướt ngăn khói tràn vào.'],
-    ['Mở cửa chạy nhanh qua khói', 0, 'Khói nóng và độc có thể làm ngất chỉ sau vài hơi thở.'],
-    ['Nằm ngủ chờ khói tan', 0, 'Hít khói trong lúc ngủ cực kỳ nguy hiểm.']] },
-  { q: 'Cần di chuyển trong khu vực có khói. Tư thế đúng?', o: [
-    ['Đứng thẳng chạy thật nhanh', 0, 'Khói nóng và độc tích tụ ở phía trên, không khí sạch hơn ở gần sàn.'],
-    ['Cúi thấp, khăn ướt che mũi miệng, bám tường di chuyển', 1, 'Giữ hơi thở sạch hơn, bám tường để không lạc hướng khi tầm nhìn kém.'],
-    ['Nín thở chạy xuyên qua khói', 0, 'Không thể nín thở đủ lâu và sẽ hít mạnh khi hết hơi.'],
-    ['Dùng thang máy xuống tầng trệt', 0, 'Thang máy không an toàn khi có cháy.']] },
-  { q: 'Lối thoát bị chặn hoàn toàn, bạn ở tầng cao. Làm gì?', o: [
-    ['Nhảy xuống từ ban công', 0, 'Rất nguy hiểm, nguy cơ chấn thương nặng hoặc tử vong. Hãy chờ cứu hộ.'],
-    ['Ở lại phòng có cửa sổ hoặc ban công, đóng cửa, vẫy khăn báo vị trí', 1, 'Phòng kín với khe cửa được chèn chặt giúp bạn có thêm thời gian, vẫy khăn giúp cứu hộ nhìn thấy bạn.'],
-    ['Phá cửa chạy xuyên hành lang đầy khói', 0, 'Nguy cơ ngạt khói và bỏng cao.'],
-    ['Trốn trong tủ quần áo', 0, 'Cứu hộ khó tìm thấy bạn và khói vẫn vào được.']] }
- ] }
-];
-
-/* ===== MÔ PHỎNG ===== */
-let S = { sc: null, st: 0, hp: 100, order: [], done: [], fb: null };
-function renderList() {
-  $('scList').innerHTML = SC.map((s, i) => `<button data-i="${i}" class="panel w-full p-4 text-left transition hover:border-amber-500 ${S.sc === i ? 'glow-amber' : ''}">
-    <span class="text-2xl">${s.icon}</span><span class="ml-2 font-bold text-white">${s.title}</span><p class="mt-1 text-sm text-slate-400">${s.desc}</p></button>`).join('');
-}
-function hp() {
-  $('hpBar').style.width = S.hp + '%'; $('hpTxt').textContent = S.hp + '%';
-  $('hpBar').className = 'h-full rounded-full transition-all duration-500 ' + (S.hp > 60 ? 'bg-emerald-400' : S.hp > 30 ? 'bg-amber-400' : 'bg-red-500');
-}
-function start(i) { S = { sc: i, st: 0, hp: 100, order: shuffle([0, 1, 2, 3]), done: [], fb: null }; renderList(); renderStage(); }
-function renderStage() {
-  hp();
-  const st = $('stage');
-  if (S.sc === null) { $('stepTxt').textContent = ''; st.innerHTML = '<div class="grid h-full min-h-[360px] place-items-center text-center"><div><p class="text-5xl">🚨</p><p class="mt-3 text-xl font-bold text-white">Chọn một tình huống để bắt đầu</p><p class="mt-1 text-slate-400">Bạn sẽ có vài quyết định liên tiếp để xử lý sự cố.</p></div></div>'; return; }
-  const sc = SC[S.sc], total = sc.steps.length;
-  if (S.hp <= 0) {
-    $('stepTxt').textContent = 'TRẠNG THÁI: THẤT BẠI';
-    st.innerHTML = `<div class="rise glow-red rounded-xl border p-6 text-center"><p class="tag text-red-400">Tình huống thất bại</p><h3 class="mt-2 text-2xl font-extrabold text-white">Bạn đã chịu quá nhiều quyết định nguy hiểm</h3><p class="mt-2 text-slate-300">Trong thực tế, những lựa chọn sai trong vài giây có thể gây thương tích nặng. Hãy xem lại các giải thích và thử lại.</p><button data-r="1" class="mt-5 rounded-lg bg-amber-500 px-5 py-3 font-bold text-slate-950">Thử lại</button></div>`; return;
-  }
-  if (S.st >= total) {
-    $('stepTxt').textContent = 'TRẠNG THÁI: HOÀN THÀNH';
-    const rate = S.hp >= 100 ? 'Xuất sắc, không sai lần nào.' : S.hp >= 50 ? 'Làm tốt, hãy xem lại các điểm đã sai.' : 'Cần luyện thêm để nhớ thứ tự thao tác.';
-    st.innerHTML = `<div class="rise glow-green rounded-xl border p-6 text-center"><p class="tag text-emerald-400">Đã xử lý an toàn</p><h3 class="mt-2 text-2xl font-extrabold text-white">Hoàn thành: ${sc.title}</h3><p class="mt-2 text-slate-300">Thanh an toàn còn <b class="font-mono text-white">${S.hp}%</b>. ${rate}</p><div class="mt-5 flex flex-wrap justify-center gap-3"><button data-r="1" class="rounded-lg bg-amber-500 px-5 py-3 font-bold text-slate-950">Chơi lại</button><button data-n="1" class="rounded-lg border border-slate-600 px-5 py-3 font-bold text-white">Tình huống khác</button></div></div>`; return;
-  }
-  const step = sc.steps[S.st]; $('stepTxt').textContent = `BƯỚC ${S.st + 1}/${total}`;
-  const solved = S.fb && S.fb.ok;
-  st.innerHTML = `<p class="tag text-amber-400">${sc.icon} ${sc.title} · Bước ${S.st + 1}/${total}</p>
-    <h3 class="mt-2 text-xl font-extrabold text-white sm:text-2xl">${step.q}</h3>
-    <div class="mt-4 grid gap-3 sm:grid-cols-2">${S.order.map(k => { const o = step.o[k], bad = S.done.includes(k);
-      return `<button data-o="${k}" ${bad || solved ? 'disabled' : ''} class="opt rounded-xl border p-4 text-left ${bad ? 'border-red-900 bg-red-950/40 text-red-300 line-through opacity-70' : 'border-slate-700 bg-slate-900/60'} ${solved && o[1] ? 'glow-green border' : ''}">${o[0]}</button>`; }).join('')}</div>
-    <div id="fb" class="mt-4">${S.fb ? `<div class="${S.fb.ok ? 'glow-green' : 'glow-red shake'} rise rounded-xl border bg-slate-950/70 p-4"><p class="tag ${S.fb.ok ? 'text-emerald-400' : 'text-red-400'}">${S.fb.ok ? '✔ Chính xác' : '✖ Nguy hiểm! Thanh an toàn −25%'}</p><p class="mt-1 text-slate-200">${S.fb.why}</p>${S.fb.ok ? '<button data-next="1" class="mt-4 rounded-lg bg-emerald-400 px-5 py-2.5 font-bold text-slate-950">Tiếp tục →</button>' : ''}</div>` : ''}</div>`;
-}
-$('scList').addEventListener('click', e => { const b = e.target.closest('[data-i]'); if (b) start(+b.dataset.i); });
-$('stage').addEventListener('click', e => {
-  const t = e.target.closest('button'); if (!t) return;
-  if (t.dataset.r) return start(S.sc);
-  if (t.dataset.n) { S = { sc: null, st: 0, hp: 100, order: [], done: [], fb: null }; renderList(); return renderStage(); }
-  if (t.dataset.next) { S.st++; S.done = []; S.order = shuffle([0, 1, 2, 3]); S.fb = null; return renderStage(); }
-  if (t.dataset.o !== undefined) {
-    const k = +t.dataset.o, o = SC[S.sc].steps[S.st].o[k];
-    if (o[1]) S.fb = { ok: true, why: o[2] }; else { S.hp = Math.max(0, S.hp - 25); S.done.push(k); S.fb = { ok: false, why: o[2] }; }
-    renderStage();
-  }
-});
-
-/* ===== SO SÁNH BÌNH ===== */
-const EXT = {
-  mfz: { name: 'Bình bột (MFZ)', sub: 'Bột chữa cháy ABC, dùng đa năng trong gia đình', color: 'amber', dist: [75, '2–3 m (xem nhãn bình)'],
-    fire: [['A · Chất rắn (gỗ, giấy, vải)', 'ok'], ['B · Chất lỏng (xăng, dầu, cồn)', 'ok'], ['C · Chất khí (gas)', 'ok'], ['Thiết bị có điện', 'ok'], ['Dầu mỡ nấu ăn', 'warn']],
-    warn: ['Bột bay mù mịt làm giảm tầm nhìn và gây ho, nên bịt mũi miệng và thoát ra thông thoáng sau khi phun.', 'Bột có thể làm hỏng thiết bị điện tử, cần vệ sinh sau khi dùng.', 'Với chảo dầu, tia phun mạnh có thể hất dầu cháy ra ngoài, ưu tiên vung hoặc chăn chữa cháy.'] },
-  co2: { name: 'Bình khí CO₂ (MT3)', sub: 'Khí CO₂ nén, không để lại cặn', color: 'sky', dist: [40, 'Khoảng 1–2 m (tầm phun ngắn)'],
-    fire: [['A · Chất rắn (gỗ, giấy, vải)', 'no'], ['B · Chất lỏng (xăng, dầu, cồn)', 'ok'], ['C · Chất khí (gas)', 'warn'], ['Thiết bị có điện', 'ok'], ['Dầu mỡ nấu ăn', 'warn']],
-    warn: ['Loa phun cực lạnh: KHÔNG cầm vào loa kim loại để tránh bỏng lạnh.', 'Trong phòng kín nhỏ, khí CO₂ có thể gây ngạt, cần thông gió sau khi dùng.', 'Chất rắn cháy âm ỉ (gỗ, vải) dễ bùng lại vì CO₂ chỉ làm lạnh và loãng oxy tạm thời.'] }
-};
-const ICON = { ok: ['✔', 'text-emerald-400', 'Dùng được'], warn: ['⚠', 'text-amber-400', 'Hạn chế'], no: ['✖', 'text-red-400', 'Không phù hợp'] };
-let mode = 'cmp';
-function cmp() {
-  const idx = { mfz: 0, cmp: 1, co2: 2 }[mode];
-  $('thumb').style.transform = `translateX(${idx * 100}%)`;
-  document.querySelectorAll('#seg [data-m]').forEach(b => { const on = b.dataset.m === mode; b.classList.toggle('text-slate-950', on); b.classList.toggle('text-slate-300', !on); b.setAttribute('aria-selected', on); });
-  $('cmpGrid').innerHTML = ['mfz', 'co2'].map(k => { const e = EXT[k], focus = mode === k || mode === 'cmp', dim = !focus;
-    return `<article class="cmp-card panel p-5 ${focus && mode !== 'cmp' ? (k === 'mfz' ? 'glow-amber' : 'glow-green') : ''} ${dim ? 'scale-95 opacity-35 blur-[1px]' : ''}">
-      <h3 class="text-xl font-extrabold text-white">${e.name}</h3><p class="text-sm text-slate-400">${e.sub}</p>
-      <p class="tag mt-4 text-slate-400">Dập được đám cháy</p>
-      <ul class="mt-2 divide-y divide-slate-800 text-sm">${e.fire.map(f => `<li class="flex items-center justify-between py-2"><span>${f[0]}</span><span class="${ICON[f[1]][1]} font-mono font-bold">${ICON[f[1]][0]} ${ICON[f[1]][2]}</span></li>`).join('')}</ul>
-      <p class="tag mt-4 text-slate-400">Khoảng cách an toàn</p>
-      <div class="mt-2 h-3 rounded-full bg-slate-800"><div class="h-full rounded-full ${k === 'mfz' ? 'bg-amber-400' : 'bg-sky-400'} transition-all duration-700" style="width:${focus ? e.dist[0] : 0}%"></div></div>
-      <p class="mt-1 font-mono text-sm text-white">${e.dist[1]}</p>
-      <p class="tag mt-4 text-red-400">Cảnh báo</p>
-      <ul class="mt-2 space-y-2 text-sm text-slate-300">${e.warn.map(w => `<li class="flex gap-2"><span class="text-red-400">▲</span><span>${w}</span></li>`).join('')}</ul></article>`; }).join('');
-}
-$('seg').addEventListener('click', e => { const b = e.target.closest('[data-m]'); if (b) { mode = b.dataset.m; cmp(); } });
-
-/* ===== THẺ LẬT P.A.S.S ===== */
-const PASS = [
-  { n: '01', k: 'KÉO', en: 'Pull', t: 'Kéo chốt an toàn', d: 'Giật chốt khỏi tay cầm để mở khóa bình, bẻ niêm chì nếu có.', m: ['Cầm bình nằm ngang hoặc ôm sát người khi giật chốt.', 'Bỏ qua việc kiểm tra kim áp suất và vòi phun trước khi dùng.', 'Mất thời gian loay hoay với chốt khi lửa đang lan.'] },
-  { n: '02', k: 'HƯỚNG', en: 'Aim', t: 'Hướng vòi vào gốc lửa', d: 'Đứng cách khoảng 2–3 m, lưng hướng về lối thoát, nhắm vào gốc ngọn lửa.', m: ['Nhắm vào ngọn lửa phía trên thay vì gốc.', 'Đứng quá xa (phun không tới) hoặc quá gần (bỏng, nhiệt).', 'Đứng ngược gió, để khói và bột thổi vào mặt.'] },
-  { n: '03', k: 'BÓP', en: 'Squeeze', t: 'Bóp van xịt', d: 'Bóp chặt tay cầm để phun chất chữa cháy, thả tay là dừng.', m: ['Phun quá sớm khi chưa nhắm xong.', 'Bóp thả liên tục, lãng phí chất chữa cháy hạn chế.', 'Quên rằng bình xách tay chỉ phun được vài chục giây.'] },
-  { n: '04', k: 'QUÉT', en: 'Sweep', t: 'Quét đều qua lại', d: 'Quét vòi từ bên này sang bên kia ở sát gốc lửa, tiến dần lên.', m: ['Quét lên phần ngọn lửa thay vì sát gốc.', 'Dừng ngay khi hết lửa mà không quan sát lại.', 'Quay lưng lại với lối thoát khi đang chữa cháy.'] }
-];
-$('cards').innerHTML = PASS.map((c, i) => `<div class="perspective"><button class="flip-wrap block h-72 w-full text-left" aria-pressed="false" aria-label="Lật thẻ bước ${c.n}: ${c.t}">
-  <div class="flip h-full w-full">
-    <div class="face panel border-slate-700"><p class="font-mono text-5xl font-bold text-red-500">${c.n}</p><p class="tag mt-1 text-amber-400">${c.en}</p><h3 class="mt-2 text-2xl font-extrabold text-white">${c.k}</h3><p class="font-semibold text-slate-200">${c.t}</p><p class="mt-2 text-sm text-slate-400">${c.d}</p><p class="absolute bottom-4 left-5 tag text-slate-500">Bấm để lật ↻</p></div>
-    <div class="face back panel glow-red border"><p class="tag text-red-400">Sai lầm cần tránh · Bước ${c.n}</p><ul class="mt-3 space-y-2 text-sm text-slate-200">${c.m.map(x => `<li class="flex gap-2"><span class="text-red-400">✖</span><span>${x}</span></li>`).join('')}</ul></div>
-  </div></button></div>`).join('');
-$('cards').addEventListener('click', e => { const b = e.target.closest('.flip-wrap'); if (!b) return; const on = b.parentElement.classList.toggle('flipped'); b.setAttribute('aria-pressed', on); });
-
-renderList(); renderStage(); cmp();
-</script>
+  <footer class="footer">
+    <div class="container">
+      <p>Công cụ mang tính giáo dục, không thay thế huấn luyện thực hành do lực lượng PCCC tổ chức.</p>
+    </div>
+  </footer>
 </body>
 </html>
